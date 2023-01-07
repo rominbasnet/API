@@ -70,10 +70,8 @@ export const CreateFreelancerProfile = async(req: Request | any, res:Response, n
 
 export const GetFreelancerProfile = async(req:Request | any, res:Response, next:NextFunction)=>{
 
-  const user = req.user; 
-  if(user){
-    try{
-      const freelancerProfile = await FreelancerProfile.findOne({freelancer: user._id}).populate('freelancer');
+  try{
+      const freelancerProfile = await FreelancerProfile.findOne({freelancer: req.params.freelancer_id}).populate('freelancer',['userName','firstName','lastName','email','description','linkedIn','location']);         
       if(freelancerProfile !== null){
         return res.status(200).json(freelancerProfile)
       } 
@@ -83,7 +81,26 @@ export const GetFreelancerProfile = async(req:Request | any, res:Response, next:
     }
     catch(err){
       res.status(500).json(err);
+    }  
+}
+
+export const GetIndFreelancerProfile = async(req:Request | any, res:Response, next:NextFunction)=>{
+ const user = req.user;
+ if(user){ 
+ try{
+      const freelancerProfile = await FreelancerProfile.findOne({freelancer: user._id}).populate('freelancer',['userName','firstName','lastName','email','description','linkedIn','location']);         
+      if(freelancerProfile !== null){
+        return res.status(200).json(freelancerProfile)
+      } 
+      else{
+        return res.status(400).json({message:"Profile not found"})
+      }
     }
-  }
-  return res.json({message:"Not a valid user"})
+    catch(err){
+      res.status(500).json(err);
+    }  
+ }
+ else{
+   res.status(400).json("Authentication failed")
+ }
 }

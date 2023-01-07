@@ -32,7 +32,7 @@ const JobSchema = new mongoose.Schema({
   jobDuration: {type: Number, required: true},
   interested: [
     {
-      user: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
+      user: {type: mongoose.Schema.Types.ObjectId, ref: 'freelancer'},
       firstName: {type: String},
       email: {type: String},
       linkedIn: {type: String},

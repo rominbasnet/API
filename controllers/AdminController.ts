@@ -3,8 +3,7 @@ import mongoose from 'mongoose';
 import {GeneratePassword, GenerateSalt} from '../utility';
 import {Business} from '../models';
 import {Freelancer} from '../models';
-import {BusinessProfileInputs} from '../dto';
-import {FreelancerProfileInputs} from '../dto';
+import {BusinessRegisterInputs, FreelancerProfileInputs} from '../dto';
 
 const router = express.Router();
 
@@ -90,7 +89,7 @@ export const GetFreelancerById= async(req:Request, res:Response, next:NextFuncti
 }
 
 export const CreateBusiness = async (req: Request, res: Response, next: NextFunction)=>{
-  const {companyName, contactName, contactEmail, password, location, companyDescription} = <BusinessProfileInputs>req.body;   
+  const {companyName, contactName, contactEmail, password, location, companyDescription} = <BusinessRegisterInputs>req.body;   
   const existingBusiness = await FindBusiness('', contactEmail);
     if(existingBusiness){
      return res.status(400).json({message:"Business already exists"});
